@@ -1,77 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+    <title>Password Generator</title>
     <style>
-    body{
-        background-color:darkgrey;
-    }
-    h1,h3{
-        text-align: center;
-    }
-    h3{
-        color:#818C82;
-    }
-
-    .content{
-        background: white;
-    }
-
-
-    </style>
-</head>
-<body>
-    <h1>Password Generator</h1>
-    
-    <div class="content">
-        <h2>Generate a password here!</h2>
-        <hr>
-        <div>
-            <h3>Generated Text Here</h3>
-        </div>
-        <button type="button" class="btn btn-danger" onclick="generate();">Generate Password</button>
-        <button type="button" class="btn btn-light float-right">Copy to Clipboard</button>
-
-    </div>
-
-    
-
-    <script>
-
-        //If button is clicked then ask user some questions
-        function generate(){
-
-            var lowerCase = ["a","b,","c","d","e","f","g","h","i","j","k","l","m","o","p","q","r","s","t","u","v","w","x","y","z"]
-            var upperCase = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
-            var specialChar = ["!","#","$", "%","&","(",")","*","+",",","-",".","/",":",";","<","=",">","?","@","[","]","^","_","`","{","|","}","~"]
-            //Asks user how many characters for password
-            var passwordLength = prompt("Please enter a number between 8 and 128");
-            var favAnimal = [prompt("What is your favorite animal"), prompt("What year were you born in?"), prompt("What is your favorite color?")];
-
-            //If the password length is less than 8 OR greater than 128, 
-            if(passwordLength <8 || passwordLength > 128)
-                {
-                    alert("That is an invalid number")
-                }
-
-            //Otherwise ask questions to create a password
-            else{
-                (favAnimal);
-            }
-
-            console.log(upperCase);
-
-            
+        body {
+            background-color: darkgrey;
         }
 
+        h1,
+        h3 {
+            text-align: center;
+        }
 
-        
-    
+        h3 {
+            color: #818C82;
+        }
+
+        .content {
+            background: white;
+            padding: 12px;
+
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Password Generator</h1>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 align-self-center m-2">
+                <div class="content">
+                    <h2>Generate a password here!</h2>
+                    <hr>
+                    <div>
+                        <h3 class="userPassword m-2 pb-2">Generated Text Here</h3>
+                    </div>
+                    <button type="button" class="btn btn-danger" onclick="generatePassword();">Generate
+                        Password</button>
+                    <button type="button" class="btn btn-light float-right">Copy to Clipboard</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+       
+        function generatePassword() 
+        {
+            // Character sets
+            var upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            var lowerCase = "abcdefghijklmnopqrstuvwxyz";
+            var numbers = "1234567890";
+            var specialChar = "~!@#$%^&*()_+`-=[]{};:,./<>?|";
+            var userPassword = "";
+
+            // Ask the user how many characters in their password
+            var passwordLength = prompt("How many characters would you like to make your password? Please enter a number between 8 and 128");
+            
+            // If the password length is less than 8 OR greater than 128, stop the code
+            if (passwordLength < 8 || passwordLength> 128) 
+            {
+                alert("That is an invalid number");
+                return;
+            }
+            // If the password length is in the valid range then ask if they would like specific characters
+            else
+            {
+                var confirmUpper = confirm("Would you like to include Uppercase characters in your password?");
+                var confirmLower = confirm("Would you like to include Lowercase characters in your password?");
+                var confirmSpecial = confirm("Would you like to include Special characters in your password?");
+                var confirmNumbers = confirm("Would you like to include Numbers in your password?");
+                var confirms = [confirmUpper, confirmLower, confirmNumbers, confirmSpecial];
+                var charset = [upperCase, lowerCase, specialChar, numbers];
+                var userCharset = "";
+
+                // Add each character set to be used
+                for(var i = 0; i < confirms.length; i++)
+                {
+                    // If the user clicks "OK" then add the character set to the user password
+                    switch (confirms[i]) 
+                    {
+                        case true:
+                            userCharset += charset[i];
+                            break;
+                    
+                        default:
+                            break;
+                    }
+                }
+
+                // Depending on how many characters the user wants, this loop will add a random character to the user password
+                for(var i = 0; i < passwordLength; i++)
+                {
+                userPassword += userCharset.charAt(Math.random() * userCharset.length);
+                }
+
+                // Replace the placeholder text
+                document.querySelector(".userPassword").innerHTML = userPassword;
+                
+                // The history of generated passwords are in the console
+                console.log(userPassword);
+            }
+
+        }
+
     </script>
 </body>
+
 </html>
