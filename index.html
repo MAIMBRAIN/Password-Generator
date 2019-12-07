@@ -41,11 +41,11 @@
                     <h2>Generate a password here!</h2>
                     <hr>
                     <div>
-                        <h3 class="userPassword m-2 pb-2">Generated Text Here</h3>
+                        <h3 class="userPassword m-3">Generated Text Here</h3>
                     </div>
                     <button type="button" class="btn btn-danger" onclick="generatePassword();">Generate
                         Password</button>
-                    <button type="button" class="btn btn-light float-right">Copy to Clipboard</button>
+                    <button type="button" class="btn btn-light float-right" onclick="toClipboard();">Copy to Clipboard</button>
                 </div>
             </div>
         </div>
@@ -54,6 +54,9 @@
 
 
     <script>
+
+        var userPassword = "";
+        var passwordText = document.querySelector(".userPassword");
        
         function generatePassword() 
         {
@@ -62,7 +65,6 @@
             var lowerCase = "abcdefghijklmnopqrstuvwxyz";
             var numbers = "1234567890";
             var specialChar = "~!@#$%^&*()_+`-=[]{};:,./<>?|";
-            var userPassword = "";
 
             // Ask the user how many characters in their password
             var passwordLength = prompt("How many characters would you like to make your password? Please enter a number between 8 and 128");
@@ -106,12 +108,36 @@
                 }
 
                 // Replace the placeholder text
-                document.querySelector(".userPassword").innerHTML = userPassword;
+                passwordText.innerHTML = userPassword;
                 
                 // The history of generated passwords are in the console
                 console.log(userPassword);
             }
+        }
 
+        function toClipboard ()
+        {
+            // Create new text area
+            const textarea = document.createElement('textarea');
+            const password = passwordText.innerText;
+
+            // The new text area will be the same value as the generated password
+            textarea.value = password;
+
+            // Append the text area to the body
+            document.body.appendChild(textarea);
+
+            // So that we can select it
+            textarea.select();
+
+            // And copy it to our clipboard
+            document.execCommand('copy');
+
+            // Remove the text area after copying
+            textarea.remove();
+
+            // Alert user that their new password has been copied to the clipboard
+            alert('Password copied to clipboard');
         }
 
     </script>
